@@ -1,9 +1,11 @@
 package Github::ReleaseFetcher;
 
-# ABSTRACT: Fetch either the latest or a particular named version of a file in a release from github
-
 use strict;
 use warnings;
+
+# ABSTRACT: Fetch either the latest or a particular named version of a file in a release from github
+use 5.006;
+use v5.14.0;    # Before 5.006, v5.10.0 would not be understood.
 
 use Carp::Always;
 use HTTP::Tiny();

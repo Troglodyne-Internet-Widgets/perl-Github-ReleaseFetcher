@@ -1,0 +1,53 @@
+!Build/
+.last_cover_stats
+/META.yml
+/META.json
+/MYMETA.*
+*.o
+*.pm.tdy
+*.bs
+
+# Devel::Cover
+cover_db/
+
+# Devel::NYTProf
+nytprof.out
+
+# Dizt::Zilla
+/.build/
+Playwright-*/
+
+# Module::Build
+_build/
+Build
+Build.bat
+
+# Module::Install
+inc/
+
+# ExtUtils::MakeMaker
+/blib/
+/_eumm/
+/*.gz
+/Makefile
+/Makefile.old
+/MANIFEST.bak
+/pm_to_blib
+/*.zip
+
+# VIM
+*.swp
+*.swo
+*.swn
+
+# Perltidy
+*.bak
+
+# Node stuff
+node_modules
+package-lock.json
+
+#nobody need know of our love, baby
+api.json
+
+bin/playwright_server.bat

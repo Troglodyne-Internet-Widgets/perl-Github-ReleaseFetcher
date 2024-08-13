@@ -61,16 +61,16 @@ Test::Mock::HTTP::Tiny->set_mocked_data([$good_version_request, $bad_listing_req
 like( dies { Github::ReleaseFetcher::fetch(undef, $user, $project) }, qr/u dumb/, "expanded assets page failing explodes");
 
 my @gut = (
-	'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-dotnet-strongnamed-4.23.0.zip',
-	'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-java-4.23.0.zip',
-	'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.1.jar',
-	'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.0.zip',
-	'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-dotnet-4.23.0.zip',
-	'http://github.com//SeleniumHQ/selenium/archive/refs/tags/selenium-4.23.0.tar.gz',
-	'http://github.com//SeleniumHQ/selenium/archive/refs/tags/selenium-4.23.0.zip',
-	'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-java-4.23.1.zip',
-	'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.0.jar',
-	'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.1.zip'
+    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-dotnet-strongnamed-4.23.0.zip',
+    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-java-4.23.0.zip',
+    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.1.jar',
+    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.0.zip',
+    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-dotnet-4.23.0.zip',
+    'http://github.com//SeleniumHQ/selenium/archive/refs/tags/selenium-4.23.0.tar.gz',
+    'http://github.com//SeleniumHQ/selenium/archive/refs/tags/selenium-4.23.0.zip',
+    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-java-4.23.1.zip',
+    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.0.jar',
+    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.1.zip'
 );
 
 Test::Mock::HTTP::Tiny->set_mocked_data([$good_version_request, $good_listing_request]);
@@ -194,5 +194,5 @@ __DATA__
 </a></div>      <div data-view-component="true" class="d-flex flex-auto flex-justify-end col-md-4 ml-3 ml-md-0 mt-1 mt-md-0 pl-1 pl-md-0">
           <span style="white-space: nowrap;" data-view-component="true" class="color-fg-muted text-right flex-shrink-0 flex-grow-0 ml-3"><relative-time datetime="2024-07-18T12:11:25Z" class="no-wrap" prefix="">2024-07-18T12:11:25Z</relative-time></span>
 </div></li>
-</ul>  
+</ul>
 </div>
