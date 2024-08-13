@@ -15,7 +15,7 @@ nytprof.out
 
 # Dizt::Zilla
 /.build/
-Playwright-*/
+Github-ReleaseFetcher-*/
 
 # Module::Build
 _build/
@@ -42,12 +42,3 @@ inc/
 
 # Perltidy
 *.bak
-
-# Node stuff
-node_modules
-package-lock.json
-
-#nobody need know of our love, baby
-api.json
-
-bin/playwright_server.bat

@@ -42,10 +42,10 @@ Returns list of files written, or in the case that outdir is a false value, the 
 our $BASE_URI = "http://github.com";
 
 sub fetch {
-    my ($outdir, $owner, $project, $search, $rename, $version, $ua) = @_;
+    my ( $outdir, $owner, $project, $search, $rename, $version, $ua ) = @_;
 
     die "Must pass outdir that exists" if $outdir && !-d $outdir;
-    die "Must pass owner" unless $owner;
+    die "Must pass owner"   unless $owner;
     die "Must pass project" unless $owner;
 
     $outdir //= "";
@@ -57,28 +57,22 @@ sub fetch {
     my $res;
 
     # Figure out *what* the latest version number is.
-    if ($version eq 'latest') {
+    if ( $version eq 'latest' ) {
         my $res = $ua->get($index);
         die "$res->{reason} :\n$res->{content}\n" unless $res->{success};
 
         #Snag the url we were redirected to, as this is the actual version
-        $version = basename($res->{url});
+        $version = basename( $res->{url} );
     }
     $index = "$BASE_URI/$owner/$project/releases/expanded_assets/$version";
-    $res = $ua->get($index);
+    $res   = $ua->get($index);
     die "$res->{reason} :\n$res->{content}\n" unless $res->{success};
 
-    my $parsed = HTML::TreeBuilder::Select->new_from_content($res->{content});
+    my $parsed = HTML::TreeBuilder::Select->new_from_content( $res->{content} );
     my @matches =
-        map {
-            $_->[0][0]
-        }
-        grep {
-            ref $_ eq "ARRAY" && ref $_->[0] eq "ARRAY";
-        }
-        map {
-            $_->extract_links()
-        } $parsed->select('a');
+      map  { $_->[0][0] }
+      grep { ref $_ eq "ARRAY" && ref $_->[0] eq "ARRAY"; }
+      map  { $_->extract_links() } $parsed->select('a');
     @matches = grep { $_ =~ $search } @matches if $search;
 
     my %names = map {
@@ -87,9 +81,9 @@ sub fetch {
         "$BASE_URI/$subj" => "$outdir/$name"
     } @matches;
 
-    foreach my $to_write (reverse sort keys %names) {
+    foreach my $to_write ( reverse sort keys %names ) {
         $ua->mirror( $to_write, $names{$to_write} ) if $outdir;
-        last if $rename;
+        last                                        if $rename;
     }
 
     return keys(%names) unless $outdir;

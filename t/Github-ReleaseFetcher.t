@@ -7,7 +7,7 @@ use Test::Mock::HTTP::Tiny;
 use Github::ReleaseFetcher;
 
 # I'll give you one guess why I wrote this module
-my ($user, $project ) = qw{SeleniumHQ selenium};
+my ( $user, $project ) = qw{SeleniumHQ selenium};
 
 my $bad_version_request = {
     url      => "$Github::ReleaseFetcher::BASE_URI/$user/$project/releases/latest",
@@ -16,7 +16,7 @@ my $bad_version_request = {
     response => {
         success => 0,
         content => 'I already have a wristwatch',
-        reason => 'u dumb',
+        reason  => 'u dumb',
     }
 };
 
@@ -26,7 +26,7 @@ my $good_version_request = {
     args     => {},
     response => {
         success => 1,
-        url => "$Github::ReleaseFetcher::BASE_URI/$user/$project/releases/666",
+        url     => "$Github::ReleaseFetcher::BASE_URI/$user/$project/releases/666",
     }
 };
 
@@ -37,11 +37,11 @@ my $bad_listing_request = {
     response => {
         success => 0,
         content => 'I already have a wristwatch',
-        reason => 'u dumb',
+        reason  => 'u dumb',
     }
 };
 
-local $/="";
+local $/ = "";
 my $content = <DATA>;
 
 my $good_listing_request = {
@@ -54,11 +54,11 @@ my $good_listing_request = {
     }
 };
 
-Test::Mock::HTTP::Tiny->set_mocked_data([$bad_version_request]);
-like( dies { Github::ReleaseFetcher::fetch(undef, $user, $project) }, qr/u dumb/, "Failing to redirect to the release version explodes");
+Test::Mock::HTTP::Tiny->set_mocked_data( [$bad_version_request] );
+like( dies { Github::ReleaseFetcher::fetch( undef, $user, $project ) }, qr/u dumb/, "Failing to redirect to the release version explodes" );
 
-Test::Mock::HTTP::Tiny->set_mocked_data([$good_version_request, $bad_listing_request]);
-like( dies { Github::ReleaseFetcher::fetch(undef, $user, $project) }, qr/u dumb/, "expanded assets page failing explodes");
+Test::Mock::HTTP::Tiny->set_mocked_data( [ $good_version_request, $bad_listing_request ] );
+like( dies { Github::ReleaseFetcher::fetch( undef, $user, $project ) }, qr/u dumb/, "expanded assets page failing explodes" );
 
 my @gut = (
     'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-dotnet-strongnamed-4.23.0.zip',
@@ -73,13 +73,13 @@ my @gut = (
     'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.1.zip'
 );
 
-Test::Mock::HTTP::Tiny->set_mocked_data([$good_version_request, $good_listing_request]);
-my @out = Github::ReleaseFetcher::fetch(undef, $user, $project);
+Test::Mock::HTTP::Tiny->set_mocked_data( [ $good_version_request, $good_listing_request ] );
+my @out = Github::ReleaseFetcher::fetch( undef, $user, $project );
 
 # Test2's bag builder is BAD DO NOT USE!!!!!!!!!!!!
 @out = sort @out;
 @gut = sort @gut;
-is( \@out, \@gut, "Got expected output when process succeeds");
+is( \@out, \@gut, "Got expected output when process succeeds" );
 
 done_testing();
 
