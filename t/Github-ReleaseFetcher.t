@@ -1,5 +1,12 @@
+use 5.014;
 use strict;
-use warnings;
+use warnings FATAL => 'all';
+
+=head1 DESCRIPTION
+
+Tests for Github::ReleaseFetcher::fetch
+
+=cut
 
 use Test2::V0;
 use Test::Mock::HTTP::Tiny;
@@ -55,23 +62,23 @@ my $good_listing_request = {
 };
 
 Test::Mock::HTTP::Tiny->set_mocked_data( [$bad_version_request] );
-like( dies { Github::ReleaseFetcher::fetch( undef, $user, $project ) }, qr/u dumb/, "Failing to redirect to the release version explodes" );
+like( dies { Github::ReleaseFetcher::fetch( undef, $user, $project ) }, qr/u dumb/aas, "Failing to redirect to the release version explodes" );
 
 Test::Mock::HTTP::Tiny->set_mocked_data( [ $good_version_request, $bad_listing_request ] );
-like( dies { Github::ReleaseFetcher::fetch( undef, $user, $project ) }, qr/u dumb/, "expanded assets page failing explodes" );
+like( dies { Github::ReleaseFetcher::fetch( undef, $user, $project ) }, qr/u dumb/aas, "expanded assets page failing explodes" );
 
-my @gut = (
-    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-dotnet-strongnamed-4.23.0.zip',
-    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-java-4.23.0.zip',
-    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.1.jar',
-    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.0.zip',
-    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-dotnet-4.23.0.zip',
-    'http://github.com//SeleniumHQ/selenium/archive/refs/tags/selenium-4.23.0.tar.gz',
-    'http://github.com//SeleniumHQ/selenium/archive/refs/tags/selenium-4.23.0.zip',
-    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-java-4.23.1.zip',
-    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.0.jar',
-    'http://github.com//SeleniumHQ/selenium/releases/download/selenium-4.23.0/selenium-server-4.23.1.zip'
-);
+my @gut = map { "http://github.com//SeleniumHQ/selenium/$_" } qw{
+  releases/download/selenium-4.23.0/selenium-dotnet-strongnamed-4.23.0.zip
+  releases/download/selenium-4.23.0/selenium-java-4.23.0.zip
+  releases/download/selenium-4.23.0/selenium-server-4.23.1.jar
+  releases/download/selenium-4.23.0/selenium-server-4.23.0.zip
+  releases/download/selenium-4.23.0/selenium-dotnet-4.23.0.zip
+  archive/refs/tags/selenium-4.23.0.tar.gz
+  archive/refs/tags/selenium-4.23.0.zip
+  releases/download/selenium-4.23.0/selenium-java-4.23.1.zip
+  releases/download/selenium-4.23.0/selenium-server-4.23.0.jar
+  releases/download/selenium-4.23.0/selenium-server-4.23.1.zip
+};
 
 Test::Mock::HTTP::Tiny->set_mocked_data( [ $good_version_request, $good_listing_request ] );
 my @out = Github::ReleaseFetcher::fetch( undef, $user, $project );
@@ -81,7 +88,13 @@ my @out = Github::ReleaseFetcher::fetch( undef, $user, $project );
 @gut = sort @gut;
 is( \@out, \@gut, "Got expected output when process succeeds" );
 
+Test::Mock::HTTP::Tiny->set_mocked_data( [ $good_version_request, $good_listing_request ] );
+@out = Github::ReleaseFetcher::fetch( undef, $user, $project, { search => qr{\.jar\z}aasx } );
+is( [ sort @out ], [ grep { m{\.jar\z}aasx } @gut ], "The search option limits the output" );
+
 done_testing();
+
+1;
 
 __DATA__
 <div data-view-component="true" class="Box Box--condensed mt-3">

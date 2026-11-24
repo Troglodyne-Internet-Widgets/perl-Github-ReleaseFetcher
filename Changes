@@ -1,5 +1,10 @@
 Revision history for Github-ReleaseFetcher
 
+{{$NEXT}}
+    - Incompatible change: fetch() takes the search, rename, version and ua arguments as one hash reference
+    - Fix the check for the project argument, which tested the owner
+    - Meet the harness standards for perlcritic
+
 1.001 2024-08-13 TEODESIAN
     - Tidy code
 
